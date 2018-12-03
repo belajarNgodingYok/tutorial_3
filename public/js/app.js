@@ -47444,7 +47444,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       email: '',
       password: '',
-      remember: true
+      remember: true,
+      loading: false
     };
   },
 
@@ -47458,11 +47459,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     attemptLogin: function attemptLogin() {
+      var _this = this;
+
+      this.loading = true;
       __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', {
         email: this.email, password: this.password, remember: this.remember
       }).then(function (Response) {
         location.reload();
       }).catch(function (error) {
+        _this.loading = false;
         console.log(error);
       });
     }
@@ -47470,7 +47475,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     isValidLoginForm: function isValidLoginForm() {
-      return this.emailIsValid() && this.password;
+      return this.emailIsValid() && this.password && !this.loading;
     }
   }
 
