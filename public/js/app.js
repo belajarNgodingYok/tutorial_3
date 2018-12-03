@@ -13952,7 +13952,6 @@ var app = new Vue({
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
 window._ = __webpack_require__(14);
 window.Popper = __webpack_require__(3).default;
 
@@ -47394,6 +47393,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -47434,6 +47435,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -47452,6 +47456,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         return false;
       }
+    },
+    attemptLogin: function attemptLogin() {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', {
+        email: this.email, password: this.password, remember: this.remember
+      }).then(function (Response) {
+        console.log(Response);
+      }).catch(function (error) {
+        console.log(error);
+      });
     }
   },
 
@@ -47611,7 +47624,12 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-bold btn-block btn-primary",
-                    attrs: { disabled: !_vm.isValidLoginForm, type: "submit" }
+                    attrs: { disabled: !_vm.isValidLoginForm, type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.attemptLogin()
+                      }
+                    }
                   },
                   [_vm._v("Login")]
                 )
