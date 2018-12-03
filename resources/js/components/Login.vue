@@ -8,16 +8,16 @@
 
       <form>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Username">
+          <input type="text" class="form-control" placeholder="Email" v-model="email">
         </div>
 
         <div class="form-group">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" v-model="password">
         </div>
 
         <div class="form-group flexbox py-10">
           <label class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" checked>
+            <input type="checkbox" class="custom-control-input" v-model="remember" checked>
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">Remember me</span>
           </label>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-bold btn-block btn-primary" type="submit">Login</button>
+          <button class="btn btn-bold btn-block btn-primary" :disabled="!isValidLoginForm" type="submit">Login</button>
         </div>
       </form>
 
@@ -40,8 +40,32 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+       data() {
+         return {
+           email: '',
+           password: '',
+           remember:true
+         }
+       },
+
+      methods: {
+
+        emailIsValid()   {  
+          if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email))  {  
+              return true
+            } else { 
+              return false 
+            }
+          }
+
+      },
+
+       computed: {
+         isValidLoginForm(){
+           return this.emailIsValid() && this.password
+         }
+       }
+
+
     }
 </script>
