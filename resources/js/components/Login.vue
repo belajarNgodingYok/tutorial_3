@@ -65,7 +65,7 @@
           axios.post('/login', {
             email: this.email, password: this.password, remember: this.remember
           }).then(Response => {
-            console.log(Response)
+            location.reload()
           } ).catch(error => {
             console.log(error)
           })
