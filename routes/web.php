@@ -11,15 +11,15 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', function () {
-   return new App\Mail\ConfirmYourEmail();
+    return view('welcome');
 });
 
-Route::get('register/confirm', 'ConfirmEmailController@index');
+// Route::get('/', function () {
+//    return new App\Mail\ConfirmYourEmail();
+// });
+
+Route::get('register/confirm', 'ConfirmEmailController@index')->name('confirm-email');
 
 Route::get('/logout', function() { auth()->logout();});
 
