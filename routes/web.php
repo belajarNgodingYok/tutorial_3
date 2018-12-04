@@ -19,6 +19,8 @@ Route::get('/', function () {
    return new App\Mail\ConfirmYourEmail();
 });
 
+Route::get('register/confirm', 'ConfirmEmailController@index');
+
 Route::get('/logout', function() { auth()->logout();});
 
 Auth::routes();

@@ -22,5 +22,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'username' => str_slug($name),
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'confirm_token' => str_random(25),
     ];
 });
