@@ -1,10 +1,10 @@
 @component('mail::message')
-# Introduction
+# One more step before joining Tutorial !
 
-The body of your message.
+We need you to confirm your Email
 
 @component('mail::button', ['url' => ''])
-Button Text
+Confirm Email
 @endcomponent
 
 Thanks,<br>

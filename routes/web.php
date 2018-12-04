@@ -11,8 +11,12 @@
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+   return new App\Mail\ConfirmYourEmail();
 });
 
 Route::get('/logout', function() { auth()->logout();});
