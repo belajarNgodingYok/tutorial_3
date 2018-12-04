@@ -7,6 +7,11 @@
       <br><br>
 
       <form>
+        <ul class="alert alert-danger" v-if="errors.length > 0">
+          <p class="text-center" v-for="error in errors" :key="errors.indexOf(error)">
+            {{ error }}
+          </p>
+        </ul>
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Email" v-model="email">
         </div>
@@ -48,7 +53,8 @@
            email: '',
            password: '',
            remember:true,
-           loading:false
+           loading:false,
+           errors: []
          }
        },
 
@@ -63,6 +69,7 @@
           },
 
         attemptLogin() {
+          this.errors = []
           this.loading = true
           axios.post('/login', {
             email: this.email, password: this.password, remember: this.remember
@@ -70,7 +77,11 @@
             location.reload()
           } ).catch(error => {
             this.loading = false
-            console.log(error)
+            if(error.response.status == 422) {
+              this.errors.push("We couldn't verify your account details. ")
+            } else {
+              this.errors.push("Something went wrong, please refresh and try again")
+            }
           })
         }
 

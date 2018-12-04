@@ -47435,6 +47435,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -47445,7 +47450,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       email: '',
       password: '',
       remember: true,
-      loading: false
+      loading: false,
+      errors: []
     };
   },
 
@@ -47461,6 +47467,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     attemptLogin: function attemptLogin() {
       var _this = this;
 
+      this.errors = [];
       this.loading = true;
       __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', {
         email: this.email, password: this.password, remember: this.remember
@@ -47468,7 +47475,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         location.reload();
       }).catch(function (error) {
         _this.loading = false;
-        console.log(error);
+        if (error.response.status == 422) {
+          _this.errors.push("We couldn't verify your account details. ");
+        } else {
+          _this.errors.push("Something went wrong, please refresh and try again");
+        }
       });
     }
   },
@@ -47518,6 +47529,23 @@ var render = function() {
             _c("br"),
             _vm._v(" "),
             _c("form", [
+              _vm.errors.length > 0
+                ? _c(
+                    "ul",
+                    { staticClass: "alert alert-danger" },
+                    _vm._l(_vm.errors, function(error) {
+                      return _c(
+                        "p",
+                        {
+                          key: _vm.errors.indexOf(error),
+                          staticClass: "text-center"
+                        },
+                        [_vm._v("\n        " + _vm._s(error) + "\n      ")]
+                      )
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
                 _c("input", {
                   directives: [
