@@ -37,10 +37,11 @@ class SeriesController extends Controller
     public function store(CreateSeriesRequest $request)
     {
         //upload file
+        //create series
         $request->uploadSeriesImage()
                 ->storeSeries();
-        //create series
         
+        session()->flash('success', 'Series created successfully. ');
         //redirect user to a page to see all series
         return redirect()->back();
     }
