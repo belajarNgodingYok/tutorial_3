@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Storage;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -69,6 +70,18 @@ class CreateSeriesTest extends TestCase
             'description' => 'the best vue casts ever',
             'image' => 'STRING_INVALID_IMAGE' 
         ])->assertSessionHasErrors('image');
+    }
+
+    public function test_only_administrators_can_create_series()
+    {
+         //genetarate user
+
+        $this->actingAs(
+             factory(User::class)->create()
+            );
+         //visit end point
+         $this->post('admin/series')->assertSessionHas('error', 'You are not authorized to perform this action');
+         //assert we r redirected
     }
 
 }
