@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Config;
 use App\User;
 use Storage;
 use Tests\TestCase;
@@ -15,6 +16,9 @@ class CreateSeriesTest extends TestCase
     public function test_a_user_can_create_a_series()
     {
         $this->withoutExceptionHandling();
+
+        
+        $this->loginAdmin();
 
         Storage::fake(config('filesystems.default'));
 
@@ -37,6 +41,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_series_must_be_created_with_a_title()
     {
+        $this->loginAdmin();
         // $this->withoutExceptionHandling();
         $this->post('admin/series',[
             'description' => 'the best vue casts ever',
@@ -46,6 +51,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_series_must_be_created_with_a_description()
     {
+        $this->loginAdmin();
         // $this->withoutExceptionHandling();
         $this->post('admin/series',[
             'title' => 'the best vue casts ever',
@@ -55,6 +61,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_series_must_be_created_with_an_image()
     {
+        $this->loginAdmin();
         // $this->withoutExceptionHandling();
         $this->post('admin/series',[
             'title' => 'the best vue casts ever',
@@ -64,6 +71,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_series_must_be_created_with_an_image_which_is_actually_an_image()
     {
+        $this->loginAdmin();
         // $this->withoutExceptionHandling();
         $this->post('admin/series',[
             'title' => 'the best vue casts ever',
@@ -74,6 +82,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_only_administrators_can_create_series()
     {
+        
          //genetarate user
 
         $this->actingAs(
