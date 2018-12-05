@@ -38,12 +38,11 @@ class SeriesController extends Controller
     {
         //upload file
         //create series
-        $request->uploadSeriesImage()
+        return $request->uploadSeriesImage()
                 ->storeSeries();
-        
-        session()->flash('success', 'Series created successfully. ');
+
         //redirect user to a page to see all series
-        return redirect()->back();
+        
     }
 
     /**
@@ -52,9 +51,9 @@ class SeriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Series $series)
     {
-        //
+        dd($series);
     }
 
     /**
