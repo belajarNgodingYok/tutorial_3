@@ -16,9 +16,11 @@
 
 <script>
     export default {
-        props: ['default_lessons'],
+        props: ['default_lessons', 'series_id'],
+        
         components: {
             "create-lesson": require('./children/CreateLesson.vue')
+            
         },
         data() {
             return {
@@ -32,8 +34,9 @@
         },
         methods: {
             createNewLesson() {
-                this.$emit('create_new_lesson')
+				this.$emit('create_new_lesson', this.series_id)
             }
+            
         }
     }
 </script>
