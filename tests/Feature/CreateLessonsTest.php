@@ -31,4 +31,79 @@ class CreateLessonsTest extends TestCase
             'title' =>$lesson['title']
         ]);
     }
+
+    public function test_a_title_is_required_to_create_a_lesson()
+    {
+        $this->loginAdmin();
+
+        $series = factory(Series::class)->create();
+
+        $lesson = [
+            'description' => 'new lesson description',
+            'episode_number' => 23,
+    		'video_id' => 222222
+        ];
+
+        // $this->postJson("/admin/{$series->id}/lessons", $lesson)
+        $this->post("/admin/{$series->id}/lessons", $lesson)
+        ->assertSessionHasErrors('title')
+        // ->assertStatus(422)
+        ;
+
+    }
+
+    public function test_a_description_is_required_to_create_a_lesson()
+    {
+        $this->loginAdmin();
+
+        $series = factory(Series::class)->create();
+
+        $lesson = [
+            "title" => 'new lesson',
+            'episode_number' => 23,
+    		'video_id' => 222222
+        ];
+
+        // $this->postJson("/admin/{$series->id}/lessons", $lesson)
+        $this->post("/admin/{$series->id}/lessons", $lesson)
+        ->assertSessionHasErrors('description')
+        // ->assertStatus(422)
+        ;
+
+    }
+
+    public function test_an_episode_number_is_required_to_create_a_lesson()
+    {
+        $this->loginAdmin();
+
+        $series = factory(Series::class)->create();
+
+        $lesson = [
+            "title" => 'new lesson',
+            'description' => 'new lesson description',
+    		'video_id' => 222222
+        ];
+
+        // $this->postJson("/admin/{$series->id}/lessons", $lesson)
+        $this->post("/admin/{$series->id}/lessons", $lesson)
+        ->assertSessionHasErrors('episode_number')
+        // ->assertStatus(422)
+        ;
+
+    }
+
+    public function test_a_video_id_is_required_to_create_a_lesson()
+    {
+    	$this->loginAdmin();
+    	$series = factory(Series::class)->create();
+    	$lesson = [
+    		"title" => 'new lesson',
+    		'description' => 'description',
+    		'episode_number' => 232
+    	];
+    	$this->post("/admin/{$series->id}/lessons", $lesson)
+    		->assertSessionHasErrors('video_id');
+    }
+
+
 }
