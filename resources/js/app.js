@@ -17,6 +17,21 @@ window.noty = function(notification) {
     window.events.$emit('notification', notification)
 }
 
+window.handleError = function(error) {
+    if (error.response.status == 422) {
+        window.noty({
+            message: 'You had validation errors. Please  try again.  ',
+            type: 'danger'
+        })
+
+    }
+
+    window.noty({
+        message: 'Something went wrong. Please refresh the page.',
+        type: 'danger'
+    })
+}
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

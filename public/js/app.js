@@ -14054,7 +14054,21 @@ window.Vue = __webpack_require__(37);
 window.events = new Vue();
 
 window.noty = function (notification) {
-  window.events.$emit('notification', notification);
+    window.events.$emit('notification', notification);
+};
+
+window.handleError = function (error) {
+    if (error.response.status == 422) {
+        window.noty({
+            message: 'You had validation errors. Please  try again.  ',
+            type: 'danger'
+        });
+    }
+
+    window.noty({
+        message: 'Something went wrong. Please refresh the page.',
+        type: 'danger'
+    });
 };
 
 /**
@@ -14070,7 +14084,7 @@ Vue.component('vue-login', __webpack_require__(40));
 Vue.component('vue-lessons', __webpack_require__(43));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app'
 });
 
 /***/ }),
@@ -47784,7 +47798,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$on('lesson_created', function (lesson) {
             window.noty({
                 message: 'Lesson created successfully',
-                type: 'danger'
+                type: 'success'
             });
 
             _this.lessons.push(lesson);
@@ -47796,6 +47810,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             _this.lessons.splice(lessonIndex, 1, lesson);
+            window.noty({
+                message: 'Lesson updated successfully',
+                type: 'success'
+            });
         });
     },
 
@@ -47822,8 +47840,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete('/admin/' + this.series_id + '/lessons/' + id).then(function (resp) {
                     console.log(resp);
                     _this2.lessons.splice(key, 1);
-                }).catch(function (resp) {
-                    console.log(resp);
+                    window.noty({
+                        message: 'Lesson deleted successfully',
+                        type: 'danger'
+                    });
+                }).catch(function (error) {
+                    if (error.response.status == 422) {
+                        window.noty({
+                            message: 'You had validation errors. Please  try again.  ',
+                            type: 'danger'
+                        });
+                    }
+
+                    window.noty({
+                        message: 'Something went wrong. Please refresh the page.',
+                        type: 'danger'
+                    });
                 });
             }
         },
@@ -47940,71 +47972,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 var Lesson = function Lesson(lesson) {
-  _classCallCheck(this, Lesson);
+    _classCallCheck(this, Lesson);
 
-  this.title = lesson.title || '';
-  this.description = lesson.description || '';
-  this.video_id = lesson.video_id || '';
-  this.episode_number = lesson.episode_number || '';
+    this.title = lesson.title || '';
+    this.description = lesson.description || '';
+    this.video_id = lesson.video_id || '';
+    this.episode_number = lesson.episode_number || '';
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    var _this = this;
+    mounted: function mounted() {
+        var _this = this;
 
-    this.$parent.$on('create_new_lesson', function (seriesId) {
-      _this.seriesId = seriesId;
-      _this.editing = false;
-      _this.lesson = new Lesson({});
-      console.log("hello parent, we are creating the lesson. ");
-      $('#createLesson').modal();
-    });
+        this.$parent.$on('create_new_lesson', function (seriesId) {
+            _this.seriesId = seriesId;
+            _this.editing = false;
+            _this.lesson = new Lesson({});
+            console.log("hello parent, we are creating the lesson. ");
+            $('#createLesson').modal();
+        });
 
-    this.$parent.$on('edit_lesson', function (_ref) {
-      var lesson = _ref.lesson,
-          seriesId = _ref.seriesId;
+        this.$parent.$on('edit_lesson', function (_ref) {
+            var lesson = _ref.lesson,
+                seriesId = _ref.seriesId;
 
-      _this.editing = true;
+            _this.editing = true;
 
-      _this.title = lesson.title;
-      _this.lesson = new Lesson(lesson);
-      _this.seriesId = seriesId;
-      _this.lessonId = lesson.id;
+            _this.title = lesson.title;
+            _this.lesson = new Lesson(lesson);
+            _this.seriesId = seriesId;
+            _this.lessonId = lesson.id;
 
-      $('#createLesson').modal();
-    });
-  },
-  data: function data() {
-    return {
-      lesson: {},
-      seriesId: '',
-      editing: false,
-      lessonId: null
-    };
-  },
-
-  methods: {
-    createLesson: function createLesson() {
-      var _this2 = this;
-
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/admin/' + this.seriesId + '/lessons', this.lesson).then(function (resp) {
-        _this2.$parent.$emit('lesson_created', resp.data);
-        $('#createLesson').modal('hide');
-      }).catch(function (resp) {
-        console.log(resp);
-      });
+            $('#createLesson').modal();
+        });
     },
-    updateLesson: function updateLesson() {
-      var _this3 = this;
+    data: function data() {
+        return {
+            lesson: {},
+            seriesId: '',
+            editing: false,
+            lessonId: null
+        };
+    },
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('/admin/' + this.seriesId + '/lessons/' + this.lessonId, this.lesson).then(function (resp) {
-        $('#createLesson').modal('hide');
-        _this3.$parent.$emit('lesson_updated', resp.data);
-      }).catch(function (resp) {
-        console.log(resp);
-      });
+    methods: {
+        createLesson: function createLesson() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/admin/' + this.seriesId + '/lessons', this.lesson).then(function (resp) {
+                _this2.$parent.$emit('lesson_created', resp.data);
+                $('#createLesson').modal('hide');
+            }).catch(function (error) {
+                window.handleErrors(error);
+            });
+        },
+        updateLesson: function updateLesson() {
+            var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('/admin/' + this.seriesId + '/lessons/' + this.lessonId, this.lesson).then(function (resp) {
+                $('#createLesson').modal('hide');
+                _this3.$parent.$emit('lesson_updated', resp.data);
+            }).catch(function (error) {
+                window.handleErrors(error);
+            });
+        }
     }
-  }
 });
 
 /***/ }),

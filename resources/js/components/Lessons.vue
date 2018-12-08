@@ -32,7 +32,7 @@ import Axios from 'axios'
             this.$on('lesson_created', (lesson) => {
                 window.noty({
                     message: 'Lesson created successfully',
-                    type: 'danger'
+                    type: 'success'
                 })
                 
                 this.lessons.push(lesson)
@@ -44,6 +44,10 @@ import Axios from 'axios'
                 })
 
                 this.lessons.splice(lessonIndex, 1, lesson)
+                window.noty({
+                    message: 'Lesson updated successfully',
+                    type: 'success'
+                })
 
             })
             
@@ -73,8 +77,23 @@ import Axios from 'axios'
                     .then(resp => {
                         console.log(resp)
                         this.lessons.splice(key, 1)
-                    }).catch(resp =>{
-                        console.log(resp)
+                        window.noty({
+                        message: 'Lesson deleted successfully',
+                        type: 'danger'
+                    })
+                    }).catch(error =>{
+                        if(error.response.status == 422) {
+                            window.noty({
+                                message: 'You had validation errors. Please  try again.  ',
+                                type: 'danger'
+                            })
+
+                        }
+
+                        window.noty({
+                            message: 'Something went wrong. Please refresh the page.',
+                            type: 'danger'
+                        })
                     })
                 }
             },
