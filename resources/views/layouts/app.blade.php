@@ -75,10 +75,14 @@
     
 
 
-@if (!auth()->check())
+{{-- @if (!auth()->check())
 <vue-login></vue-login>
     
-@endif
+@endif --}}
+<vue-noty></vue-noty>
+@guest
+<vue-login></vue-login>    
+@endguest
     
     <!-- Footer -->
     <footer class="site-footer">

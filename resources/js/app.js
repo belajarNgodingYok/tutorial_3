@@ -8,11 +8,22 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+window.events = new Vue()
+
+
+
+window.noty = function(notification) {
+    window.events.$emit('notification', notification)
+}
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Vue.component('vue-noty', require('./components/Noty.vue'))
 
 Vue.component('vue-login', require('./components/Login.vue'));
 
