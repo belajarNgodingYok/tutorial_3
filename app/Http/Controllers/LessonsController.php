@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Series;
 use App\Lesson;
+use App\Http\Requests\UpdateLessonRequest;
 use App\Http\Requests\CreateLessonRequest;
 use Illuminate\Http\Request;
 
@@ -70,9 +71,11 @@ class LessonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Series $series, Lesson $lesson, UpdateLessonRequest $request)
     {
-        //
+        $lesson->update($request->all());
+
+        return $lesson->fresh();
     }
 
     /**

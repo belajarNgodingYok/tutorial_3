@@ -9,7 +9,7 @@
             <li class="list-group-item d-flex justify-content-between" v-for="lesson, key in lessons">
                 <p>{{ lesson.title }}</p> 
 					<p>
-						<button class="btn btn-primary btn-xs">
+						<button class="btn btn-primary btn-xs" @click="editLesson(lesson)">
 							Edit
 						</button>
 						<button class="btn btn-danger btn-xs" @click="deleteLesson(lesson.id, key)">
@@ -61,6 +61,10 @@ import Axios from 'axios'
                         console.log(resp)
                     })
                 }
+            },
+
+            editLesson(lesson) {
+                this.$emit('edit_lesson', lesson)
             }
             
         }

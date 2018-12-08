@@ -35,8 +35,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="createLesson()">Save lesson</button>
-          <button type="button" class="btn btn-primary">Create lesson</button>
+          <button type="button" class="btn btn-primary" @click="updateLesson()" v-if="editing">Save lesson</button>
+          <button type="button" class="btn btn-primary" @click="createLesson()" v-else>Create lesson</button>
         </div>
       </div>
     </div>
@@ -51,7 +51,19 @@ export default {
 				this.seriesId = seriesId
 				console.log("hello parent, we are creating the lesson. "); 
 				$('#createLesson').modal()
-			})
+      })
+      
+    this.$parent.$on('edit_lesson', (lesson) => {
+        this.editing = true
+        this.title = lesson.title
+        this.description = lesson.description
+        this.video_id = lesson.video_id
+        this.episode_number = lesson.episode_number
+
+        $('#createLesson').modal()
+
+    })
+
   },
   data() {
       return {
@@ -59,7 +71,8 @@ export default {
           description: '',
           episode_number: '',
           video_id:'',
-          seriesId: ''
+          seriesId: '',
+          editing: false
       }
   },
   methods: {
@@ -75,7 +88,13 @@ export default {
           }).catch(resp => {
               console.log(resp)
           })
+      },
+
+      updateLesson() {
+        console.log('updating')
       }
+
+
   }
 };
 </script>

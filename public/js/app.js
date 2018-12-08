@@ -47805,6 +47805,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log(resp);
                 });
             }
+        },
+        editLesson: function editLesson(lesson) {
+            this.$emit('edit_lesson', lesson);
         }
     }
 });
@@ -47920,6 +47923,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("hello parent, we are creating the lesson. ");
             $('#createLesson').modal();
         });
+
+        this.$parent.$on('edit_lesson', function (lesson) {
+            _this.editing = true;
+            _this.title = lesson.title;
+            _this.description = lesson.description;
+            _this.video_id = lesson.video_id;
+            _this.episode_number = lesson.episode_number;
+
+            $('#createLesson').modal();
+        });
     },
     data: function data() {
         return {
@@ -47927,7 +47940,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             description: '',
             episode_number: '',
             video_id: '',
-            seriesId: ''
+            seriesId: '',
+            editing: false
         };
     },
 
@@ -47946,6 +47960,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (resp) {
                 console.log(resp);
             });
+        },
+        updateLesson: function updateLesson() {
+            console.log('updating');
         }
     }
 });
@@ -48085,25 +48102,33 @@ var render = function() {
               [_vm._v("Close")]
             ),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.createLesson()
-                  }
-                }
-              },
-              [_vm._v("Save lesson")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Create lesson")]
-            )
+            _vm.editing
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.updateLesson()
+                      }
+                    }
+                  },
+                  [_vm._v("Save lesson")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.createLesson()
+                      }
+                    }
+                  },
+                  [_vm._v("Create lesson")]
+                )
           ])
         ])
       ])
@@ -48195,9 +48220,18 @@ var render = function() {
               _c("p", [_vm._v(_vm._s(lesson.title))]),
               _vm._v(" "),
               _c("p", [
-                _c("button", { staticClass: "btn btn-primary btn-xs" }, [
-                  _vm._v("\n\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t")
-                ]),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-xs",
+                    on: {
+                      click: function($event) {
+                        _vm.editLesson(lesson)
+                      }
+                    }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t")]
+                ),
                 _vm._v(" "),
                 _c(
                   "button",
