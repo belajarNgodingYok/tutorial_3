@@ -53,11 +53,13 @@ export default {
 				$('#createLesson').modal()
       })
       
-    this.$parent.$on('edit_lesson', (lesson) => {
+    this.$parent.$on('edit_lesson', ({lesson, seriesId}) => {
         this.editing = true
         this.title = lesson.title
         this.description = lesson.description
         this.video_id = lesson.video_id
+        this.seriesId = seriesId
+        this.lessonId = lesson.id
         this.episode_number = lesson.episode_number
 
         $('#createLesson').modal()
@@ -72,7 +74,8 @@ export default {
           episode_number: '',
           video_id:'',
           seriesId: '',
-          editing: false
+          editing: false,
+          lessonId: null
       }
   },
   methods: {
@@ -91,7 +94,18 @@ export default {
       },
 
       updateLesson() {
-        console.log('updating')
+        Axios.put(`/admin/${this.seriesId}/lessons/${this.lessonId}`, {
+              title: this.title,
+              description: this.description,
+              episode_number: this.episode_number,
+              video_id:this.video_id
+        })
+        .then(resp => {
+          console.log(resp)
+        }).catch(resp => {
+          console.log(resp)
+        })
+
       }
 
 

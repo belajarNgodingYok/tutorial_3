@@ -47807,7 +47807,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         editLesson: function editLesson(lesson) {
-            this.$emit('edit_lesson', lesson);
+            var seriesId = this.series_id;
+            this.$emit('edit_lesson', { lesson: lesson, seriesId: seriesId });
         }
     }
 });
@@ -47924,11 +47925,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#createLesson').modal();
         });
 
-        this.$parent.$on('edit_lesson', function (lesson) {
+        this.$parent.$on('edit_lesson', function (_ref) {
+            var lesson = _ref.lesson,
+                seriesId = _ref.seriesId;
+
             _this.editing = true;
             _this.title = lesson.title;
             _this.description = lesson.description;
             _this.video_id = lesson.video_id;
+            _this.seriesId = seriesId;
+            _this.lessonId = lesson.id;
             _this.episode_number = lesson.episode_number;
 
             $('#createLesson').modal();
@@ -47941,7 +47947,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             episode_number: '',
             video_id: '',
             seriesId: '',
-            editing: false
+            editing: false,
+            lessonId: null
         };
     },
 
@@ -47962,7 +47969,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateLesson: function updateLesson() {
-            console.log('updating');
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('/admin/' + this.seriesId + '/lessons/' + this.lessonId, {
+                title: this.title,
+                description: this.description,
+                episode_number: this.episode_number,
+                video_id: this.video_id
+            }).then(function (resp) {
+                console.log(resp);
+            }).catch(function (resp) {
+                console.log(resp);
+            });
         }
     }
 });

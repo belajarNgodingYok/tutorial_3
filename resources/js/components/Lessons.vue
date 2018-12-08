@@ -64,7 +64,8 @@ import Axios from 'axios'
             },
 
             editLesson(lesson) {
-                this.$emit('edit_lesson', lesson)
+                let seriesId = this.series_id
+                this.$emit('edit_lesson', {lesson, seriesId})
             }
             
         }
