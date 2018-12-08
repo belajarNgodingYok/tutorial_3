@@ -47738,6 +47738,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -47754,6 +47756,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['default_lessons', 'series_id'],
@@ -47781,6 +47793,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         createNewLesson: function createNewLesson() {
             this.$emit('create_new_lesson', this.series_id);
+        },
+        deleteLesson: function deleteLesson(id) {
+            if (confirm('Are you sure you wanna delete ?')) {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete('/admin/' + this.series_id + '/lessons/' + id).then(function (resp) {
+                    console.log(resp);
+                }).catch(function (resp) {
+                    console.log(resp);
+                });
+            }
         }
     }
 });
@@ -48156,17 +48177,40 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n                Create New Lesson\n            ")]
+          [_vm._v("\n                    Create New Lesson\n                ")]
         )
       ]),
       _vm._v(" "),
       _c(
         "ul",
         { staticClass: "list-group" },
-        _vm._l(_vm.lessons, function(Lesson) {
-          return _c("li", { staticClass: "list-group-item" }, [
-            _vm._v("\n            " + _vm._s(Lesson.title) + "\n        ")
-          ])
+        _vm._l(_vm.lessons, function(lesson) {
+          return _c(
+            "li",
+            { staticClass: "list-group-item d-flex justify-content-between" },
+            [
+              _c("p", [_vm._v(_vm._s(lesson.title))]),
+              _vm._v(" "),
+              _c("p", [
+                _c("button", { staticClass: "btn btn-primary btn-xs" }, [
+                  _vm._v("\n\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger btn-xs",
+                    on: {
+                      click: function($event) {
+                        _vm.deleteLesson(lesson.id)
+                      }
+                    }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\t\tDelete\n\t\t\t\t\t\t")]
+                )
+              ])
+            ]
+          )
         })
       ),
       _vm._v(" "),
