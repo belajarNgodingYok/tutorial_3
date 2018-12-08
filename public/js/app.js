@@ -47794,10 +47794,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createNewLesson: function createNewLesson() {
             this.$emit('create_new_lesson', this.series_id);
         },
-        deleteLesson: function deleteLesson(id) {
+        deleteLesson: function deleteLesson(id, key) {
+            var _this2 = this;
+
             if (confirm('Are you sure you wanna delete ?')) {
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete('/admin/' + this.series_id + '/lessons/' + id).then(function (resp) {
                     console.log(resp);
+                    _this2.lessons.splice(key, 1);
                 }).catch(function (resp) {
                     console.log(resp);
                 });
@@ -48184,7 +48187,7 @@ var render = function() {
       _c(
         "ul",
         { staticClass: "list-group" },
-        _vm._l(_vm.lessons, function(lesson) {
+        _vm._l(_vm.lessons, function(lesson, key) {
           return _c(
             "li",
             { staticClass: "list-group-item d-flex justify-content-between" },
@@ -48202,7 +48205,7 @@ var render = function() {
                     staticClass: "btn btn-danger btn-xs",
                     on: {
                       click: function($event) {
-                        _vm.deleteLesson(lesson.id)
+                        _vm.deleteLesson(lesson.id, key)
                       }
                     }
                   },
