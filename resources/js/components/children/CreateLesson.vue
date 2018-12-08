@@ -35,7 +35,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="createLesson">Save lesson</button>
+          <button type="button" class="btn btn-primary" @click="createLesson()">Save lesson</button>
           <button type="button" class="btn btn-primary">Create lesson</button>
         </div>
       </div>
@@ -70,7 +70,8 @@ export default {
                 episode_number: this.episode_number,
                 video_id:this.video_id
           }).then(resp => {
-              console.log(resp)
+              this.$parent.$emit('lesson_created', resp.data)
+              $('#createLesson').modal('hide')
           }).catch(resp => {
               console.log(resp)
           })

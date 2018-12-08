@@ -6,7 +6,7 @@
                 </button>
         </h1>
         <ul class="list-group">
-            <li class="list-group-item" v-for="Lesson in formattedLessons">
+            <li class="list-group-item" v-for="Lesson in lessons">
                 {{ Lesson.title}}
             </li>
         </ul>
@@ -17,6 +17,12 @@
 <script>
     export default {
         props: ['default_lessons', 'series_id'],
+
+        mounted() {
+            this.$on('lesson_created', (lesson) => {
+                this.lessons.push(lesson)
+            })
+        },
         
         components: {
             "create-lesson": require('./children/CreateLesson.vue')
@@ -24,13 +30,11 @@
         },
         data() {
             return {
-                lessons: this.default_lessons
+                lessons: JSON.parse(this.default_lessons)
             }
         },
         computed: {
-            formattedLessons() {
-                return JSON.parse(this.lessons)
-            }
+            
         },
         methods: {
             createNewLesson() {
